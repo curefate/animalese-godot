@@ -32,7 +32,7 @@ extends Resource
 ## Phoneme playback step: 1 = play every phoneme, 2 = play every 2nd phoneme.
 @export_range(1, 4, 1) var phoneme_step: int = 1
 
-@export_group("Low-Pass Filter (Deep / Muffled / Large Creature)")
+@export_group("Low-Pass Filter")
 ## Whether to enable low-pass filter effect.
 @export var enable_low_pass: bool = false
 ## Cutoff frequency for low-pass filter in Hz.
@@ -40,7 +40,7 @@ extends Resource
 ## Resonance (Q factor) for low-pass filter.
 @export_range(1.0, 10.0, 0.1) var low_pass_resonance: float = 1.0
 
-@export_group("High-Pass Filter (Thin / Crisp / Small Creature / Radio)")
+@export_group("High-Pass Filter")
 ## Whether to enable high-pass filter effect.
 @export var enable_high_pass: bool = false
 ## Cutoff frequency for high-pass filter in Hz.
