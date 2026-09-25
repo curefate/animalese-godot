@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Majulizi.Animalese
@@ -19,7 +20,7 @@ namespace Majulizi.Animalese
         private VoiceProfileSO _profile;
 
         // Runtime state machine fields
-        private VoiceTokenList _tokens;
+        private IReadOnlyList<VoiceToken> _tokens;
         private int _currentIndex = 0;
         private float _timer = 0f;
         private float _speedMultiplier = 1.0f;
@@ -72,8 +73,25 @@ namespace Majulizi.Animalese
                 _audioSource.loop = false;
             }
 
+            // Ensure audio filter components are ready and disabled by default to avoid runtime AddComponent calls
             _lowPassFilter = GetComponent<AudioLowPassFilter>();
+            if (_lowPassFilter == null)
+            {
+                _lowPassFilter = gameObject.AddComponent<AudioLowPassFilter>();
+            }
+            _lowPassFilter.enabled = false;
+
             _highPassFilter = GetComponent<AudioHighPassFilter>();
+            if (_highPassFilter == null)
+            {
+                _highPassFilter = gameObject.AddComponent<AudioHighPassFilter>();
+            }
+            _highPassFilter.enabled = false;
+
+            if (_profile != null)
+            {
+                ApplyProfileFilters(_profile);
+            }
         }
 
         private void Update()
@@ -86,6 +104,11 @@ namespace Majulizi.Animalese
             // Advance timer (supports dynamic speed changes)
             _timer -= Time.deltaTime * Mathf.Max(0.01f, _speedMultiplier);
 
+            // Clamp maximum time debt to prevent spiral of catch-up loops during extreme framerate drops
+            _timer = Mathf.Max(_timer, -0.2f);
+
+            bool playedAudioThisFrame = false;
+
             while (_timer <= 0f && _isPlaying)
             {
                 if (_currentIndex >= _tokens.Count)
@@ -95,7 +118,7 @@ namespace Majulizi.Animalese
                 }
 
                 VoiceToken token = _tokens[_currentIndex];
-                ProcessToken(token);
+                ProcessToken(token, ref playedAudioThisFrame);
                 _currentIndex++;
             }
         }
@@ -125,7 +148,7 @@ namespace Majulizi.Animalese
         /// <summary>
         /// Plays an existing token list using the currently assigned Profile.
         /// </summary>
-        public void Play(VoiceTokenList tokens)
+        public void Play(IReadOnlyList<VoiceToken> tokens)
         {
             Play(tokens, _profile);
         }
@@ -133,7 +156,7 @@ namespace Majulizi.Animalese
         /// <summary>
         /// Overrides the current Profile and plays an existing token list.
         /// </summary>
-        public void Play(VoiceTokenList tokens, VoiceProfileSO profile)
+        public void Play(IReadOnlyList<VoiceToken> tokens, VoiceProfileSO profile)
         {
             Stop();
 
@@ -198,7 +221,7 @@ namespace Majulizi.Animalese
             _speedMultiplier = Mathf.Max(0.1f, multiplier);
         }
 
-        private void ProcessToken(VoiceToken token)
+        private void ProcessToken(VoiceToken token, ref bool playedAudioThisFrame)
         {
             // 1. Calculate physical time required for this token
             float baseInterval = _profile != null ? _profile.baseInterval : 0.06f;
@@ -214,20 +237,26 @@ namespace Majulizi.Animalese
 
                 if (_phonemeStepCounter % step == 0)
                 {
-                    AudioClip clip = FindClipForToken(token);
-                    if (clip != null && _audioSource != null)
+                    // Rate-limit audio playback to at most once per frame to prevent cacophony and pitch overrides
+                    if (!playedAudioThisFrame)
                     {
-                        float basePitch = _profile != null ? _profile.basePitch : 1.0f;
-                        float riseFactor = _profile != null ? _profile.questionPitchRise : 0.35f;
-                        float jitterRange = _profile != null ? _profile.pitchJitter : 0.08f;
-                        float jitter = UnityEngine.Random.Range(-jitterRange, jitterRange);
+                        AudioClip clip = FindClipForToken(token);
+                        if (clip != null && _audioSource != null)
+                        {
+                            float basePitch = _profile != null ? _profile.basePitch : 1.0f;
+                            float riseFactor = _profile != null ? _profile.questionPitchRise : 0.35f;
+                            float jitterRange = _profile != null ? _profile.pitchJitter : 0.08f;
+                            float jitter = UnityEngine.Random.Range(-jitterRange, jitterRange);
 
-                        float finalPitch = basePitch * (1.0f + token.PitchOffset * riseFactor) + jitter;
-                        _audioSource.pitch = Mathf.Clamp(finalPitch, 0.1f, 3.0f);
+                            float finalPitch = basePitch * (1.0f + token.PitchOffset * riseFactor) + jitter;
+                            _audioSource.pitch = Mathf.Clamp(finalPitch, 0.1f, 3.0f);
 
-                        float baseVolume = _profile != null ? _profile.volume : 1.0f;
-                        float finalVolume = Mathf.Clamp01(baseVolume * token.VolumeScale);
-                        _audioSource.PlayOneShot(clip, finalVolume);
+                            float baseVolume = _profile != null ? _profile.volume : 1.0f;
+                            float finalVolume = Mathf.Clamp01(baseVolume * token.VolumeScale);
+                            _audioSource.PlayOneShot(clip, finalVolume);
+
+                            playedAudioThisFrame = true;
+                        }
                     }
                 }
             }
@@ -252,8 +281,8 @@ namespace Majulizi.Animalese
                 }
             }
 
-            // 2. Fallback using Unicode codepoint hash for non-English or missing phonemes
-            int codePoint = char.ConvertToUtf32(token.SourceChar.ToString(), 0);
+            // 2. Fallback using character code for non-English or missing phonemes (zero GC allocation)
+            int codePoint = (int)token.SourceChar;
             if (_profile.phonemeMap.GetFallbackClip(codePoint, out _, out var fallbackClip))
             {
                 return fallbackClip;
@@ -264,43 +293,28 @@ namespace Majulizi.Animalese
 
         private void ApplyProfileFilters(VoiceProfileSO profile)
         {
-            if (profile == null)
+            // Low-pass filter
+            if (_lowPassFilter != null)
             {
-                if (_lowPassFilter != null) _lowPassFilter.enabled = false;
-                if (_highPassFilter != null) _highPassFilter.enabled = false;
-                return;
+                bool enableLowPass = profile != null && profile.enableLowPass;
+                _lowPassFilter.enabled = enableLowPass;
+                if (enableLowPass)
+                {
+                    _lowPassFilter.cutoffFrequency = profile.lowPassCutoff;
+                    _lowPassFilter.lowpassResonanceQ = profile.lowPassResonance;
+                }
             }
 
-            // Low-pass filter handling
-            if (profile.enableLowPass)
+            // High-pass filter
+            if (_highPassFilter != null)
             {
-                if (_lowPassFilter == null)
+                bool enableHighPass = profile != null && profile.enableHighPass;
+                _highPassFilter.enabled = enableHighPass;
+                if (enableHighPass)
                 {
-                    _lowPassFilter = gameObject.AddComponent<AudioLowPassFilter>();
+                    _highPassFilter.cutoffFrequency = profile.highPassCutoff;
+                    _highPassFilter.highpassResonanceQ = profile.highPassResonance;
                 }
-                _lowPassFilter.enabled = true;
-                _lowPassFilter.cutoffFrequency = profile.lowPassCutoff;
-                _lowPassFilter.lowpassResonanceQ = profile.lowPassResonance;
-            }
-            else if (_lowPassFilter != null)
-            {
-                _lowPassFilter.enabled = false;
-            }
-
-            // High-pass filter handling
-            if (profile.enableHighPass)
-            {
-                if (_highPassFilter == null)
-                {
-                    _highPassFilter = gameObject.AddComponent<AudioHighPassFilter>();
-                }
-                _highPassFilter.enabled = true;
-                _highPassFilter.cutoffFrequency = profile.highPassCutoff;
-                _highPassFilter.highpassResonanceQ = profile.highPassResonance;
-            }
-            else if (_highPassFilter != null)
-            {
-                _highPassFilter.enabled = false;
             }
         }
 

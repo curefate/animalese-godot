@@ -88,9 +88,9 @@ res://
 
 ## 5. 里程碑与执行阶段 (Checklist)
 
-- [ ] **Phase 1: 基础插件骨架与资源转移**
-  - [ ] 创建 `addons/animalese/plugin.cfg` 与 `animalese_plugin.gd`。
-  - [ ] 将 Unity Samples 中的 31 个音素 `.wav` 音频复制至 `addons/animalese/assets/sounds/` 并由 Godot 导入。
+- [x] **Phase 1: 基础插件骨架与资源转移**
+  - [x] 创建 `addons/animalese/plugin.cfg` 与 `animalese_plugin.gd`。
+  - [x] 将 Unity Samples 中的 32 个音素 `.wav` 音频复制至 `addons/animalese/assets/sounds/`。
 - [ ] **Phase 2: 数据结构与核心资源类**
   - [ ] 实现 `VoiceToken` (`scripts/core/voice_token.gd`)。
   - [ ] 实现 `PhonemeMap` (`scripts/resources/phoneme_map.gd`)，含字典索引与 Unicode 降级机制。
@@ -111,6 +111,6 @@ res://
 ---
 
 ## 6. 当前状态
-- **Status**: 已完成 Unity 源码分析与 Godot 插件架构设计；任务描述文档已在 `.agent/task.md` 建立。
-- **Next Step**: 用户确认后启动 Phase 1 与 Phase 2 实施。
+- **Status**: Phase 1 已完成（插件骨架、配置入口及 32 个音素采样已就绪）。
+- **Next Step**: 开始 Phase 2，实现 `VoiceToken`、`PhonemeMap` 与 `VoiceProfile` 核心数据类及资源。
 
