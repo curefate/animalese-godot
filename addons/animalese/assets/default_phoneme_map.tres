@@ -1,0 +1,72 @@
+[gd_resource type="Resource" script_class="PhonemeMap" format=3]
+
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/a.wav" id="1_o6b70"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/b.wav" id="2_lvl31"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/c.wav" id="3_jlvj6"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/ch.wav" id="4_841gh"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/d.wav" id="5_rgdsl"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/dot.wav" id="6_ogjer"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/e.wav" id="7_t4kdu"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/f.wav" id="8_1cc8i"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/g.wav" id="9_w1let"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/h.wav" id="10_cyc4p"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/i.wav" id="11_tl1eb"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/j.wav" id="12_yackd"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/k.wav" id="13_2rc7r"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/l.wav" id="14_e10ma"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/m.wav" id="15_hkv71"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/n.wav" id="16_t8ytd"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/o.wav" id="17_n1qui"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/p.wav" id="18_qwm2b"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/ph.wav" id="19_llexr"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/q.wav" id="20_kil0d"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/r.wav" id="21_ql2cq"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/s.wav" id="22_6ydke"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/sh.wav" id="23_6eyvj"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/t.wav" id="24_wnwmr"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/th.wav" id="25_35iso"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/u.wav" id="26_evb05"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/v.wav" id="27_bnybo"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/w.wav" id="28_4g7gv"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/wh.wav" id="29_n4g86"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/x.wav" id="30_um55q"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/y.wav" id="31_70dcw"]
+[ext_resource type="AudioStream" path="res://addons/animalese/assets/sounds/z.wav" id="32_qoak8"]
+[ext_resource type="Script" path="res://addons/animalese/scripts/resources/phoneme_map.gd" id="33_04jk7"]
+
+[resource]
+script = ExtResource("33_04jk7")
+entries = Dictionary[String, AudioStream]({
+"a": ExtResource("1_o6b70"),
+"b": ExtResource("2_lvl31"),
+"c": ExtResource("3_jlvj6"),
+"ch": ExtResource("4_841gh"),
+"d": ExtResource("5_rgdsl"),
+"dot": ExtResource("6_ogjer"),
+"e": ExtResource("7_t4kdu"),
+"f": ExtResource("8_1cc8i"),
+"g": ExtResource("9_w1let"),
+"h": ExtResource("10_cyc4p"),
+"i": ExtResource("11_tl1eb"),
+"j": ExtResource("12_yackd"),
+"k": ExtResource("13_2rc7r"),
+"l": ExtResource("14_e10ma"),
+"m": ExtResource("15_hkv71"),
+"n": ExtResource("16_t8ytd"),
+"o": ExtResource("17_n1qui"),
+"p": ExtResource("18_qwm2b"),
+"ph": ExtResource("19_llexr"),
+"q": ExtResource("20_kil0d"),
+"r": ExtResource("21_ql2cq"),
+"s": ExtResource("22_6ydke"),
+"sh": ExtResource("23_6eyvj"),
+"t": ExtResource("24_wnwmr"),
+"th": ExtResource("25_35iso"),
+"u": ExtResource("26_evb05"),
+"v": ExtResource("27_bnybo"),
+"w": ExtResource("28_4g7gv"),
+"wh": ExtResource("29_n4g86"),
+"x": ExtResource("30_um55q"),
+"y": ExtResource("31_70dcw"),
+"z": ExtResource("32_qoak8")
+})

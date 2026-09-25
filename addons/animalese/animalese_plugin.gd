@@ -1,14 +1,16 @@
 @tool
 extends EditorPlugin
 
-## Animalese 插件编辑器入口脚本
-## 负责在 Godot 编辑器中注册自定义节点与类型图标
+## Animalese EditorPlugin entry script.
+## Registers custom node types and editor integrations.
+
+const PLUGIN_ICON = preload("res://addons/animalese/icon.svg")
+const PLAYER_SCRIPT = preload("res://addons/animalese/scripts/nodes/animalese_player.gd")
+
 
 func _enter_tree() -> void:
-	# 自定义节点 AnimalesePlayer 将在实现后在此处通过 add_custom_type 注册
-	pass
+	add_custom_type("AnimalesePlayer", "Node", PLAYER_SCRIPT, PLUGIN_ICON)
+
 
 func _exit_tree() -> void:
-	# 插件注销时清理自定义节点类型
-	pass
-
+	remove_custom_type("AnimalesePlayer")

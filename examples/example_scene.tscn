@@ -1,0 +1,72 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://examples/example_typewriter.gd" id="1_qqekj"]
+[ext_resource type="Script" path="res://addons/animalese/scripts/nodes/animalese_player.gd" id="2_fighv"]
+[ext_resource type="Resource" path="res://addons/animalese/assets/default_profile.tres" id="3_bbie7"]
+
+[node name="ExampleScene" type="Control" unique_id=1949939314 node_paths=PackedStringArray("output_label", "input_field", "play_button", "skip_button", "animalese_player")]
+layout_mode = 3
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_qqekj")
+output_label = NodePath("CenterContainer/VBoxContainer/DialoguePanel/MarginContainer/DialogueOutput")
+input_field = NodePath("CenterContainer/VBoxContainer/InputHBox/DialogueInput")
+play_button = NodePath("CenterContainer/VBoxContainer/InputHBox/PlayButton")
+skip_button = NodePath("CenterContainer/VBoxContainer/InputHBox/SkipButton")
+animalese_player = NodePath("AnimalesePlayer")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1437787514]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=811654977]
+custom_minimum_size = Vector2(700, 400)
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/VBoxContainer" unique_id=1363086025]
+layout_mode = 2
+text = "Animalese Speech Synthesizer & Typewriter Demo"
+horizontal_alignment = 1
+
+[node name="InputHBox" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=259661592]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="DialogueInput" type="LineEdit" parent="CenterContainer/VBoxContainer/InputHBox" unique_id=1735548978]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Hello! Welcome to [color=green]Animal Crossing[/color]?! I love it... 你好，欢迎来到动物森友会~ 🐱🎉"
+placeholder_text = "Type text to speak..."
+
+[node name="PlayButton" type="Button" parent="CenterContainer/VBoxContainer/InputHBox" unique_id=1484775428]
+layout_mode = 2
+text = " Speak "
+
+[node name="SkipButton" type="Button" parent="CenterContainer/VBoxContainer/InputHBox" unique_id=1981165878]
+layout_mode = 2
+text = " Skip "
+
+[node name="DialoguePanel" type="PanelContainer" parent="CenterContainer/VBoxContainer" unique_id=406924903]
+custom_minimum_size = Vector2(700, 160)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/VBoxContainer/DialoguePanel" unique_id=83976482]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="DialogueOutput" type="RichTextLabel" parent="CenterContainer/VBoxContainer/DialoguePanel/MarginContainer" unique_id=882273685]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "[color=gray]Click 'Speak' to test dialogue speech synthesis...[/color]"
+
+[node name="AnimalesePlayer" type="Node" parent="." unique_id=12475899]
+script = ExtResource("2_fighv")
+profile = ExtResource("3_bbie7")

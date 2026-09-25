@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="VoiceProfile" format=3]
+
+[ext_resource type="Resource" path="res://addons/animalese/assets/default_phoneme_map.tres" id="1_euobc"]
+[ext_resource type="Script" path="res://addons/animalese/scripts/resources/voice_profile.gd" id="2_3e10m"]
+
+[resource]
+script = ExtResource("2_3e10m")
+phoneme_map = ExtResource("1_euobc")
+base_pitch = 1.495
