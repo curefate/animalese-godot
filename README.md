@@ -2,7 +2,7 @@
 
 A lightweight, zero-dependency, procedural "Animalese" speech synthesizer for Godot 4 dialogue systems. Converts raw text into rhythmic character gibberish voice lines in real time, with expressive intonations and millisecond-accurate UI typewriter synchronization.
 
-> **Note:** This project is a full-featured, zero-dependency GDScript port to **Godot 4** based on the original Unity package [Animalese-Unity](https://github.com/curefate/Animalese-Unity).
+> **Note:** This project is a full-featured, zero-dependency GDScript port to **Godot 4** based on the original Unity package [animalese-unity](https://github.com/curefate/Animalese-Unity).
 
 ---
 
@@ -20,12 +20,13 @@ A lightweight, zero-dependency, procedural "Animalese" speech synthesizer for Go
 
 ## Installation
 
-### Method 1: Via Godot Asset Library (AssetLib)
-1. Open your project in Godot 4.
+~~### Method 1: Via Godot Asset Library (AssetLib)~~
+~~1. Open your project in Godot 4.
 2. Click on the **AssetLib** tab at the top of the editor.
 3. Search for **Animalese** and click **Download**.
 4. In the install dialog, ensure the `addons/animalese/` folder is checked, then click **Install**.
-5. Go to **Project** > **Project Settings** > **Plugins** and enable **Animalese**.
+5. Go to **Project** > **Project Settings** > **Plugins** and enable **Animalese**.~~
+(Not yet)
 
 ### Method 2: Manual Installation
 1. Clone or download this repository.
@@ -144,7 +145,7 @@ godot --headless -s tests/test_typewriter_integration.gd
 
 ## Credits & Attribution
 
-- **Original Unity Package**: Directly ported and enhanced from [Animalese-Unity](https://github.com/curefate/Animalese-Unity).
+- **Original Unity Package**: Directly ported and enhanced from [animalese-unity](https://github.com/curefate/Animalese-Unity).
 - **Phoneme Sound Samples**: Sourced from [ztc0611/Ren-py-Animalese](https://github.com/ztc0611/Ren-py-Animalese), which were originally based on work by Henry and made available for free use and modification.
 
 ---
